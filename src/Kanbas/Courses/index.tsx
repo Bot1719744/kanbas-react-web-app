@@ -1,23 +1,26 @@
 import CoursesNavigation from "./Navigation";
 import Modules from "./Modules";
+import Home from "./Home";
 import { Navigate, Route, Routes } from "react-router";
+import React from "react";
 export default function Courses() {
     return (
         <div id="wd-courses">
             <h2>Course 1234</h2>
-            <hr />
+            <hr/>
             <table>
                 <tr>
                     <td valign="top">
-                        <CoursesNavigation />
+                        <CoursesNavigation/>
                     </td>
                     <td valign="top">
                         <Routes>
                             <Route path="/" element={<Navigate to="Home" />} />
-                            <Route path="Home" element={<h2>Home</h2>} />
+                            <Route path="Home" element={<Home />} />
+                            <Route path="Courses" element={<Courses />} />
                             <Route path="Modules" element={<Modules />} />
-                            <Route path="Assignments" element={<h2>Assignments</h2>} />
-                            <Route path="Assignments/:aid" element={<h2>Assignment Editor</h2>} />
+                            <Route path="Assignments" element={<h2>Assignments</h2>}/>
+                            <Route path="Assignments/:aid" element={<h2>Assignment Editor</h2>}/>
                             <Route path="People" element={<h2>People</h2>} />
                         </Routes>
                     </td>

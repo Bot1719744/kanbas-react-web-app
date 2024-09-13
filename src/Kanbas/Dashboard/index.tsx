@@ -7,7 +7,22 @@ export default function Dashboard() {
             <div id="wd-dashboard-courses">
 
                 <div className="wd-dashboard-course">
-                    <img src="images/CareerDesign.PNG" width={200} alt={"CareerDesign"} />
+                    <img src="images/reactjs.jpg" width={200}/>
+                    <div>
+                        <Link className="wd-dashboard-course-link"
+                              to={`/Kanbas/Courses/1234/Home`}>
+                            CS1234 React JS
+                        </Link>
+                        <p className="wd-dashboard-course-title">
+                            Full Stack software developer
+                        </p>
+                        <Link to={`/Kanbas/Courses/1234/Home`}> Go </Link>
+                    </div>
+                </div>
+
+
+                <div className="wd-dashboard-course">
+                    <img src="images/CareerDesign.PNG" width={200} alt={"CareerDesign"}/>
                     <div>
                         <Link className="wd-dashboard-course-link"
                               to="https://northeastern.instructure.com/courses/161027">
