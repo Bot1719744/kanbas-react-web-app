@@ -30,7 +30,7 @@ export default function BootstrapNavigation() {
                         <p className="card-text">
                             Stacking the most powerful rocket in history. Mars or bust!
                         </p>
-                        <a href="#" className="btn btn-primary">
+                        <a href="https://www.flickr.com/photos/78968367@N06/53708869123/" className="btn btn-primary">
                             Boldly Go
                         </a>
                     </div>
