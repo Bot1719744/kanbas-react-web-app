@@ -1,6 +1,5 @@
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
-import KanbasNavigation from "../../Navigation";
 
 export default function Assignments() {
     return (

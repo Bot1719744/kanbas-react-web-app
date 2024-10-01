@@ -1,6 +1,5 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
-import KanbasNavigation from "../../Navigation";
 
 export default function PeopleTable() {
     return (
