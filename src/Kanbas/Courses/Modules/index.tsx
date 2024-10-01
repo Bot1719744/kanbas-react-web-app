@@ -2,15 +2,13 @@ import ModulesControls from "./ModulesControls";
 import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import {BsGripVertical} from "react-icons/bs";
-import KanbasNavigation from "../../Navigation";
 
 export default function Modules() {
     return (
         <div>
 
-            <KanbasNavigation/>
             <ModulesControls/><br/><br/><br/><br/>
-            <ul id="wd-modules" className="list-group rounded-0" style={{ marginLeft: "360px" }}>
+            <ul id="wd-modules" className="list-group rounded-0" style={{ marginLeft: "100px", marginRight: "100px"}}>
                 <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-secondary">
                         <BsGripVertical className="me-2 fs-3" />

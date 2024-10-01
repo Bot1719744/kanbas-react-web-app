@@ -5,9 +5,8 @@ import KanbasNavigation from "../../Navigation";
 export default function Assignments() {
     return (
         <div>
-            <KanbasNavigation />
 
-            <div className="d-flex justify-content-between align-items-center mb-3" style={{ marginLeft: "360px" }}>
+            <div className="d-flex justify-content-between align-items-center mb-3" style={{ marginLeft: "100px" }}>
 
                 <div className="d-flex align-items-center">
                     <FaSearch className="me-2" />
@@ -38,7 +37,7 @@ export default function Assignments() {
                 </div>
             </div>
 
-            <ul id="wd-assignments" className="list-group rounded-0" style={{ marginLeft: "360px" }}>
+            <ul id="wd-assignments" className="list-group rounded-0" style={{ marginLeft: "100px"}}>
                 <li className="wd-assignment list-group-item p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-secondary">
                         <BsGripVertical className="me-2 fs-3" />

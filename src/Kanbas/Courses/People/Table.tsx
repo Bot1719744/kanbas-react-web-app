@@ -5,11 +5,7 @@ import KanbasNavigation from "../../Navigation";
 export default function PeopleTable() {
     return (
 
-        <div>
-
-            <KanbasNavigation />
-
-            <div id="wd-people-table" style={{marginLeft: "140px"}}>
+            <div id="wd-people-table" style={{marginLeft: "100px"}}>
 
                 <table className="table table-striped">
                     <thead>
@@ -81,8 +77,6 @@ export default function PeopleTable() {
                     </tbody>
                 </table>
             </div>
-        </div>
-
 
     );
 }
