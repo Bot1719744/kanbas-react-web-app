@@ -4,16 +4,16 @@ export default function BootstrapNavigation() {
             <h2>Tabs</h2>
             <ul className="nav nav-tabs">
                 <li className="nav-item">
-                    <a className="nav-link active" href="#">Active</a>
+                    <a className="nav-link active" href="https://flic.kr/p/2pQ4ZAT">Active</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Link</a>
+                    <a className="nav-link" href="https://flic.kr/p/2pQ4ZAT">Link</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#">Link</a>
+                    <a className="nav-link" href="https://flic.kr/p/2pQ4ZAT">Link</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link disabled" href="#">Disabled</a>
+                    <a className="nav-link disabled" href="https://flic.kr/p/2pQ4ZAT">Disabled</a>
                 </li>
             </ul>
 
