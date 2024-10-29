@@ -1,16 +1,20 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import * as db from "../../Database"; // Mock database for assignments
+import { useDispatch, useSelector } from "react-redux";
+import { addAssignment, updateAssignment } from "./reducer"; // Adjust path as needed
 
-// Define the keys of the onlineEntryOptions object
 type OnlineEntryOptionsKey = 'textEntry' | 'websiteURL' | 'mediaRecordings' | 'studentAnnotation' | 'fileUploads';
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    const assignments = db.assignments;
-    const assignment = assignments.find((assign) => assign.course === cid && assign._id === aid);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    // Initialize state with default values from the JSON file
+    // Access global assignments state
+    const assignments = useSelector((state: any) => state.assignments.assignments);
+    const assignment = assignments.find((assign: any) => assign.course === cid && assign._id === aid);
+
+    // State for form fields
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [points, setPoints] = useState(100);
@@ -20,77 +24,89 @@ export default function AssignmentEditor() {
         websiteURL: false,
         mediaRecordings: false,
         studentAnnotation: false,
-        fileUploads: false
+        fileUploads: false,
     });
     const [dueDate, setDueDate] = useState("");
     const [availableFrom, setAvailableFrom] = useState("");
     const [availableUntil, setAvailableUntil] = useState("");
     const [assignTo, setAssignTo] = useState("Everyone");
 
-    // Populate state with assignment data on component load
     useEffect(() => {
         if (assignment) {
-            setTitle(assignment.title || "");
-            setDescription(assignment.description || "");
-            setPoints(assignment.points || 100);
-            setSubmissionType(assignment.submissionType || "Online");
-            setOnlineEntryOptions(assignment.onlineEntryOptions || {
-                textEntry: false,
-                websiteURL: false,
-                mediaRecordings: false,
-                studentAnnotation: false,
-                fileUploads: false
-            });
-            setDueDate(assignment.dueDate || "");
-            setAvailableFrom(assignment.availableFrom || "");
-            setAvailableUntil(assignment.availableUntil || "");
-            setAssignTo(assignment.assignTo || "Everyone");
+            setTitle(assignment.title);
+            setDescription(assignment.description);
+            setPoints(assignment.points);
+            setSubmissionType(assignment.submissionType);
+            setOnlineEntryOptions(assignment.onlineEntryOptions);
+            setDueDate(assignment.dueDate);
+            setAvailableFrom(assignment.availableFrom);
+            setAvailableUntil(assignment.availableUntil);
+            setAssignTo(assignment.assignTo);
         }
     }, [assignment]);
 
-    if (!assignment) {
-        return <div>Loading...</div>;
-    }
-
-    // Corrected handleOptionChange function with explicit typing
     const handleOptionChange = (option: OnlineEntryOptionsKey) => {
-        setOnlineEntryOptions({
-            ...onlineEntryOptions,
-            [option]: !onlineEntryOptions[option]  // Ensure TypeScript knows that `option` is one of the valid keys
-        });
+        setOnlineEntryOptions((prev) => ({
+            ...prev,
+            [option]: !prev[option],
+        }));
     };
+
+    const handleSave = () => {
+        const newAssignment = {
+            _id: aid || Date.now().toString(),
+            course: cid,
+            title,
+            description,
+            points,
+            submissionType,
+            onlineEntryOptions,
+            assignTo,
+            dueDate,
+            availableFrom,
+            availableUntil,
+        };
+
+        if (assignment) {
+            dispatch(updateAssignment(newAssignment));
+        } else {
+            dispatch(addAssignment(newAssignment));
+        }
+
+        navigate(`/Kanbas/Courses/${cid}/Assignments/`);
+    };
+
+    const handleCancel = () => navigate(`/Kanbas/Courses/${cid}/Assignments/`);
 
     return (
         <div className="container mt-5">
-            {/* Assignment Name and Points */}
             <div className="row mb-4">
                 <div className="col-md-6 mb-3">
-                    <label htmlFor="wd-name" className="form-label">Assignment Name</label>
+                    <label htmlFor="title" className="form-label">Assignment Name</label>
                     <input
-                        id="wd-name"
+                        id="title"
                         className="form-control"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
                 <div className="col-md-6 mb-3">
-                    <label htmlFor="wd-points" className="form-label">Points</label>
+                    <label htmlFor="points" className="form-label">Points</label>
                     <input
-                        id="wd-points"
+                        id="points"
                         className="form-control"
-                        value={points}
                         type="number"
+                        value={points}
                         onChange={(e) => setPoints(Number(e.target.value))}
                     />
                 </div>
             </div>
 
-            {/* Assignment Description */}
             <div className="row mb-4">
                 <div className="col-12">
-                    <label htmlFor="wd-description" className="form-label">Description</label>
+                    <label htmlFor="description" className="form-label">Description</label>
                     <textarea
-                        id="wd-description"
+                        id="description"
                         className="form-control"
                         rows={4}
                         value={description}
@@ -99,12 +115,11 @@ export default function AssignmentEditor() {
                 </div>
             </div>
 
-            {/* Submission Type and Online Entry Options */}
             <div className="row mb-4 border p-3">
                 <div className="col-md-4">
-                    <label htmlFor="wd-submission-type" className="form-label">Submission Type</label>
+                    <label htmlFor="submissionType" className="form-label">Submission Type</label>
                     <select
-                        id="wd-submission-type"
+                        id="submissionType"
                         className="form-control"
                         value={submissionType}
                         onChange={(e) => setSubmissionType(e.target.value)}
@@ -116,95 +131,58 @@ export default function AssignmentEditor() {
 
                 <div className="col-md-12 p-3">
                     <label className="form-label font-weight-bold">Online Entry Options</label>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="wd-text-entry"
-                            checked={onlineEntryOptions.textEntry}
-                            onChange={() => handleOptionChange("textEntry")}
-                        />
-                        <label className="form-check-label" htmlFor="wd-text-entry">Text Entry</label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="wd-website-url"
-                            checked={onlineEntryOptions.websiteURL}
-                            onChange={() => handleOptionChange("websiteURL")}
-                        />
-                        <label className="form-check-label" htmlFor="wd-website-url">Website URL</label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="wd-media-recordings"
-                            checked={onlineEntryOptions.mediaRecordings}
-                            onChange={() => handleOptionChange("mediaRecordings")}
-                        />
-                        <label className="form-check-label" htmlFor="wd-media-recordings">Media Recordings</label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="wd-student-annotation"
-                            checked={onlineEntryOptions.studentAnnotation}
-                            onChange={() => handleOptionChange("studentAnnotation")}
-                        />
-                        <label className="form-check-label" htmlFor="wd-student-annotation">Student Annotation</label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="wd-file-upload"
-                            checked={onlineEntryOptions.fileUploads}
-                            onChange={() => handleOptionChange("fileUploads")}
-                        />
-                        <label className="form-check-label" htmlFor="wd-file-upload">File Uploads</label>
-                    </div>
+                    {Object.keys(onlineEntryOptions).map((option) => (
+                        <div className="form-check" key={option}>
+                            <input
+                                type="checkbox"
+                                className="form-check-input"
+                                id={option}
+                                checked={onlineEntryOptions[option as OnlineEntryOptionsKey]}
+                                onChange={() => handleOptionChange(option as OnlineEntryOptionsKey)}
+                            />
+                            <label className="form-check-label" htmlFor={option}>
+                                {option.replace(/([A-Z])/g, ' $1')}
+                            </label>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Assign To, Due Date, Available From, and Available Until */}
             <div className="row mb-4 border p-3">
                 <div className="col-md-12">
-                    <label htmlFor="wd-assign-to" className="form-label">Assign To</label>
+                    <label htmlFor="assignTo" className="form-label">Assign To</label>
                     <input
-                        id="wd-assign-to"
+                        id="assignTo"
                         className="form-control"
                         value={assignTo}
                         onChange={(e) => setAssignTo(e.target.value)}
                     />
                 </div>
                 <div className="col-md-12">
-                    <label htmlFor="wd-due-date" className="form-label">Due Date</label>
+                    <label htmlFor="dueDate" className="form-label">Due Date</label>
                     <input
                         type="date"
-                        id="wd-due-date"
+                        id="dueDate"
                         className="form-control"
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
                     />
                 </div>
                 <div className="col-md-6">
-                    <label htmlFor="wd-available-from" className="form-label">Available From</label>
+                    <label htmlFor="availableFrom" className="form-label">Available From</label>
                     <input
                         type="date"
-                        id="wd-available-from"
+                        id="availableFrom"
                         className="form-control"
                         value={availableFrom}
                         onChange={(e) => setAvailableFrom(e.target.value)}
                     />
                 </div>
                 <div className="col-md-6">
-                    <label htmlFor="wd-available-until" className="form-label">Available Until</label>
+                    <label htmlFor="availableUntil" className="form-label">Available Until</label>
                     <input
                         type="date"
-                        id="wd-available-until"
+                        id="availableUntil"
                         className="form-control"
                         value={availableUntil}
                         onChange={(e) => setAvailableUntil(e.target.value)}
@@ -212,10 +190,9 @@ export default function AssignmentEditor() {
                 </div>
             </div>
 
-            {/* Buttons */}
             <div className="d-flex justify-content-end">
-                <Link to={`/courses/${cid}/assignments`} className="btn btn-secondary me-2">Cancel</Link>
-                <Link to={`/courses/${cid}/assignments`} className="btn btn-success">Save</Link>
+                <button onClick={handleCancel} className="btn btn-secondary me-2">Cancel</button>
+                <button onClick={handleSave} className="btn btn-success">Save</button>
             </div>
         </div>
     );

@@ -1,11 +1,18 @@
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
-import * as db from "../../Database";
+import { useSelector } from "react-redux";
+import React from "react";
 
 export default function Assignments() {
     const { cid } = useParams(); // Extract course ID from route parameters
-    const assignments = db.assignments; // Access assignments from the database
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer); // Access assignments from Redux store
+    const navigate = useNavigate(); // Initialize navigate for routing
+
+    const handleAddAssignment = () => {
+        // Navigate to the AssignmentEditor with the new ID
+        navigate(`/Kanbas/Courses/${cid}/Assignments/Editor`);
+    };
 
     return (
         <div>
@@ -32,6 +39,7 @@ export default function Assignments() {
                     <button
                         id="wd-add-assignment"
                         className="btn btn-danger d-flex align-items-center"
+                        onClick={handleAddAssignment}
                     >
                         <FaPlus className="me-1" /> Assignment
                     </button>
@@ -51,8 +59,8 @@ export default function Assignments() {
 
                     <ul className="wd-assignment-list list-group rounded-0">
                         {assignments
-                            .filter((assignment) => assignment.course === cid) // Filter assignments by course ID
-                            .map((assignment) => (
+                            .filter((assignment: any) => assignment.course === cid) // Filter assignments by course ID
+                            .map((assignment: any) => (
                                 <li key={assignment._id} className="wd-assignment-list-item list-group-item p-3 ps-1">
                                     <BsGripVertical className="me-2 fs-3" />
                                     <a
