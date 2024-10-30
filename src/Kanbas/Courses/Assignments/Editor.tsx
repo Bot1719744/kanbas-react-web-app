@@ -11,7 +11,7 @@ export default function AssignmentEditor() {
     const dispatch = useDispatch();
 
     // Access global assignments state
-    const assignments = useSelector((state: any) => state.assignments.assignments);
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const assignment = assignments.find((assign: any) => assign.course === cid && assign._id === aid);
 
     // State for form fields

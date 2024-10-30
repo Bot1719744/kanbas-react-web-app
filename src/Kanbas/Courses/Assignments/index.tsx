@@ -1,17 +1,26 @@
 import { useParams, useNavigate } from "react-router";
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAssignment } from "./reducer"; // Make sure this action is defined in your reducer
 import React from "react";
 
 export default function Assignments() {
     const { cid } = useParams(); // Extract course ID from route parameters
     const { assignments } = useSelector((state: any) => state.assignmentsReducer); // Access assignments from Redux store
+    const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize navigate for routing
 
     const handleAddAssignment = () => {
-        // Navigate to the AssignmentEditor with the new ID
-        navigate(`/Kanbas/Courses/${cid}/Assignments/Editor`);
+        const newId = Date.now().toString();
+        navigate(`/Kanbas/Courses/${cid}/Assignments/${newId}`);
+    };
+
+    const handleDeleteAssignment = (assignmentId: string) => {
+        const confirmed = window.confirm("Are you sure you want to delete this assignment?");
+        if (confirmed) {
+            dispatch(deleteAssignment(assignmentId));
+        }
     };
 
     return (
@@ -61,20 +70,29 @@ export default function Assignments() {
                         {assignments
                             .filter((assignment: any) => assignment.course === cid) // Filter assignments by course ID
                             .map((assignment: any) => (
-                                <li key={assignment._id} className="wd-assignment-list-item list-group-item p-3 ps-1">
-                                    <BsGripVertical className="me-2 fs-3" />
-                                    <a
-                                        className="wd-assignment-link text-decoration-none"
-                                        href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+                                <li key={assignment._id} className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <BsGripVertical className="me-2 fs-3" />
+                                        <a
+                                            className="wd-assignment-link text-decoration-none"
+                                            href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}
+                                        >
+                                            {assignment.title}
+                                        </a>
+                                        <h6 className="text-muted mt-1">
+                                            Multiple Modules | Not available until May 6 at 12:00am |
+                                        </h6>
+                                        <h6 className="text-muted">
+                                            Due May 13 at 11:59pm | {assignment.points || 100} pts
+                                        </h6>
+                                    </div>
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => handleDeleteAssignment(assignment._id)}
+                                        aria-label="Delete Assignment"
                                     >
-                                        {assignment.title}
-                                    </a>
-                                    <h6 className="text-muted mt-1">
-                                        Multiple Modules | Not available until May 6 at 12:00am |
-                                    </h6>
-                                    <h6 className="text-muted">
-                                        Due May 13 at 11:59pm | {assignment.points || 100} pts
-                                    </h6>
+                                        <FaTrash />
+                                    </button>
                                 </li>
                             ))}
                     </ul>

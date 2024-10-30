@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { assignments } from '../../Database'; // Assuming `assignments` is exported from a Database file
+import * as db from "../../Database";
 
 const initialState = {
-    assignments: assignments, // Initialize assignments from database
+    assignments: db.assignments, // Initialize assignments from database
 };
 
 const assignmentsSlice = createSlice({
