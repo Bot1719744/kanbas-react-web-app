@@ -2,24 +2,44 @@ import { useParams, useNavigate } from "react-router";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import { BsGripVertical } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteAssignment } from "./reducer"; // Make sure this action is defined in your reducer
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { setAssignments, deleteAssignment } from "./reducer"; // Ensure this is imported
+import * as assignmentsClient from "./client"; // Import client functions
 
 export default function Assignments() {
     const { cid } = useParams(); // Extract course ID from route parameters
     const { assignments } = useSelector((state: any) => state.assignmentsReducer); // Access assignments from Redux store
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize navigate for routing
+    const [searchTerm, setSearchTerm] = useState("");
+
+    // Fetch assignments on component mount
+    useEffect(() => {
+        const fetchAssignments = async () => {
+            try {
+                const data = await assignmentsClient.fetchAllAssignments();
+                dispatch(setAssignments(data)); // Dispatch to update Redux state
+            } catch (error) {
+                console.error("Error fetching assignments:", error);
+            }
+        };
+        fetchAssignments();
+    }, [dispatch]);
 
     const handleAddAssignment = () => {
         const newId = Date.now().toString();
         navigate(`/Kanbas/Courses/${cid}/Assignments/${newId}`);
     };
 
-    const handleDeleteAssignment = (assignmentId: string) => {
+    const handleDeleteAssignment = async (assignmentId: string) => {
         const confirmed = window.confirm("Are you sure you want to delete this assignment?");
         if (confirmed) {
-            dispatch(deleteAssignment(assignmentId));
+            try {
+                await assignmentsClient.deleteAssignment(assignmentId);
+                dispatch(deleteAssignment(assignmentId)); // Dispatch to update Redux state
+            } catch (error) {
+                console.error("Error deleting assignment:", error);
+            }
         }
     };
 
@@ -34,6 +54,8 @@ export default function Assignments() {
                         className="form-control"
                         placeholder="Search for Assignments"
                         style={{ maxWidth: "250px" }}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
@@ -68,7 +90,7 @@ export default function Assignments() {
 
                     <ul className="wd-assignment-list list-group rounded-0">
                         {assignments
-                            .filter((assignment: any) => assignment.course === cid) // Filter assignments by course ID
+                            .filter((assignment: any) => assignment.course === cid && assignment.title.toLowerCase().includes(searchTerm.toLowerCase())) // Filter assignments by course ID and search term
                             .map((assignment: any) => (
                                 <li key={assignment._id} className="wd-assignment-list-item list-group-item p-3 ps-1 d-flex justify-content-between align-items-center">
                                     <div>

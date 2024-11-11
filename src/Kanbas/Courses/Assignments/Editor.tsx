@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "./reducer"; // Adjust path as needed
+import * as assignmentsClient from "./client"; // Import client functions
 
 type OnlineEntryOptionsKey = 'textEntry' | 'websiteURL' | 'mediaRecordings' | 'studentAnnotation' | 'fileUploads';
 
@@ -52,7 +53,7 @@ export default function AssignmentEditor() {
         }));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const newAssignment = {
             _id: aid || Date.now().toString(),
             course: cid,
@@ -67,13 +68,18 @@ export default function AssignmentEditor() {
             availableUntil,
         };
 
-        if (assignment) {
-            dispatch(updateAssignment(newAssignment));
-        } else {
-            dispatch(addAssignment(newAssignment));
+        try {
+            if (assignment) {
+                const updatedAssignment = await assignmentsClient.updateAssignment(newAssignment);
+                dispatch(updateAssignment(updatedAssignment)); // Update Redux state with server response
+            } else {
+                const createdAssignment = await assignmentsClient.createAssignment(newAssignment);
+                dispatch(addAssignment(createdAssignment)); // Add new assignment from server response
+            }
+            navigate(`/Kanbas/Courses/${cid}/Assignments/`);
+        } catch (error) {
+            console.error("Error saving assignment:", error);
         }
-
-        navigate(`/Kanbas/Courses/${cid}/Assignments/`);
     };
 
     const handleCancel = () => navigate(`/Kanbas/Courses/${cid}/Assignments/`);

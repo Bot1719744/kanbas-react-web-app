@@ -1,38 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
-import * as db from "../Database"; // Import from the mock database
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    enrollments: db.enrollments,
+    enrollments: [],
 };
 
 const enrollmentsSlice = createSlice({
-    name: 'enrollments',
+    name: "enrollments",
     initialState,
     reducers: {
-        enroll: (state, action) => {
-            const newEnrollment = {
-                _id: Date.now().toString(),
-                user: action.payload.userId,
-                course: action.payload.courseId
-            };
-
-            const exists = state.enrollments.some(
-                (enrollment) => enrollment.user === newEnrollment.user && enrollment.course === newEnrollment.course
-            );
-
-            if (!exists) {
-                state.enrollments.push(newEnrollment);
-                localStorage.setItem("enrollments", JSON.stringify(state.enrollments));
-            }
+        setEnrollments: (state, action) => {
+            state.enrollments = action.payload;
         },
-        unenroll: (state, action) => {
+        enroll: (state, { payload: enrollment }) => {
+            state.enrollments = [...state.enrollments, enrollment] as any;
+        },
+        unenroll: (state, { payload: { userId, courseId } }) => {
             state.enrollments = state.enrollments.filter(
-                (enrollment) => enrollment.user !== action.payload.userId || enrollment.course !== action.payload.courseId
+                (enrollment: any) => enrollment.user !== userId || enrollment.course !== courseId
             );
-            localStorage.setItem("enrollments", JSON.stringify(state.enrollments));
         },
     },
 });
 
-export const { enroll, unenroll } = enrollmentsSlice.actions;
+export const { setEnrollments, enroll, unenroll } = enrollmentsSlice.actions;
 export default enrollmentsSlice.reducer;
