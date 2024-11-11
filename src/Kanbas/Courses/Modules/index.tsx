@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { BsGripVertical } from "react-icons/bs";
@@ -14,13 +14,15 @@ export default function Modules() {
     const [moduleName, setModuleName] = useState("");
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
-    const fetchModules = async () => {
+    const fetchModules = useCallback(async () => {
         const modules = await coursesClient.findModulesForCourse(cid as string);
         dispatch(setModules(modules));
-    };
+    }, [cid, dispatch]);
+
     useEffect(() => {
         fetchModules();
-    }, []);
+    }, [fetchModules]);
+
     const createModuleForCourse = async () => {
         if (!cid) return;
         const newModule = { name: moduleName, course: cid };
