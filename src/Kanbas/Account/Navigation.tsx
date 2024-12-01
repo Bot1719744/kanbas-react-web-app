@@ -7,6 +7,8 @@ export default function AccountNavigation() {
     const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
     const location = useLocation();
     const navigate = useNavigate();
+    const active = (path: string) => (pathname.includes(path) ? "active" : "");
+    const { pathname } = useLocation();
 
     // Redirect to the appropriate screen when the Account link is clicked in Kanbas Navigation
     useEffect(() => {
@@ -17,6 +19,7 @@ export default function AccountNavigation() {
 
     return (
         <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0" style={{ marginLeft: "140px" }}>
+
             {links.includes("Signin") && (
                 <Link
                     to="/Kanbas/Account/Signin"
@@ -46,6 +49,9 @@ export default function AccountNavigation() {
                     Profile
                 </Link>
             )}
+
+            {currentUser && currentUser.role === "ADMIN" && (
+                <Link to={`/Kanbas/Account/Users`} className={`list-group-item ${active("Users")}`}> Users </Link> )}
         </div>
     );
 }
