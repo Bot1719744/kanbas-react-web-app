@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { useParams, useNavigate } from "react-router";
 import * as client from "../../Account/client";
@@ -26,14 +26,15 @@ export default function PeopleDetails() {
         navigate(-1);
     };
 
-    const fetchUser = async () => {
+    const fetchUser = useCallback(async () => {
         if (!uid) return;
-        const user = await client.findUserById(uid);
-        setUser(user);
-    };
+        const fetchedUser = await client.findUserById(uid);
+        setUser(fetchedUser);
+    }, [uid]);
+
     useEffect(() => {
         if (uid) fetchUser();
-    }, [uid]);
+    }, [uid, fetchUser]);
     if (!uid) return null;
     return (
         <div className="wd-people-details position-fixed top-0 end-0 bottom-0 bg-white p-4 shadow w-25">

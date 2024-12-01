@@ -9,6 +9,10 @@ export default function Users() {
     const [role, setRole] = useState("");
     const [name, setName] = useState("");
 
+    useEffect(() => {
+        console.log("Current name filter:", name);
+    }, [name]);
+
     const filterUsersByName = async (name: string) => {
         setName(name);
         if (name) {
