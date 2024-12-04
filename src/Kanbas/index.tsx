@@ -20,6 +20,8 @@ export default function Kanbas() {
     });
 
     const { currentUser } = useSelector((state: any) => state.accountReducer);
+
+
     const fetchCourses = async () => {
         let courses = [];
         try {
@@ -29,18 +31,19 @@ export default function Kanbas() {
         }
         setCourses(courses);
     };
-    useEffect(() => {
-        fetchCourses();
-    }, [currentUser]);
+
 
     const addNewCourse = async () => {
-        const newCourse = await userClient.createCourse(course);
-        setCourses([ ...courses, newCourse ]);
+        const newCourse = await courseClient.createCourse(course);
+        setCourses([...courses, newCourse]);
     };
 
     const deleteCourse = async (courseId: string) => {
+        const status = await courseClient.deleteCourse(courseId);
+        console.log(status.data);
         setCourses(courses.filter((course) => course._id !== courseId));
     };
+
 
     const updateCourse = async () => {
         await courseClient.updateCourse(course);
@@ -49,6 +52,10 @@ export default function Kanbas() {
                 else { return c; }
             })
         );};
+
+    useEffect(() => {
+        fetchCourses();
+    }, [currentUser]);
 
 
     return (
