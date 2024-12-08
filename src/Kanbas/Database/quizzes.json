@@ -1,0 +1,92 @@
+[
+  {
+    "courseId": "674ce3cc7df966cc9ba98c21",
+    "title": "Rocket Science Fundamentals",
+    "description": "A quiz to test your knowledge on the fundamentals of rocket propulsion.",
+    "points": 50,
+    "availableDate": "2023-02-01T00:00:00.000Z",
+    "dueDate": "2023-03-01T23:59:59.000Z",
+    "published": true,
+    "questions": [
+      {
+        "questionType": "MCQ",
+        "title": "What is the primary function of a rocket nozzle?",
+        "points": 10,
+        "options": [
+          { "text": "To control the thrust direction", "correct": false },
+          { "text": "To convert thermal energy into kinetic energy", "correct": true },
+          { "text": "To store fuel", "correct": false },
+          { "text": "To stabilize the rocket", "correct": false }
+        ]
+      },
+      {
+        "questionType": "TF",
+        "title": "Rocket engines operate efficiently in space due to the lack of atmospheric pressure.",
+        "points": 5,
+        "answer": "True"
+      },
+      {
+        "questionType": "FIB",
+        "title": "The chemical compound used as an oxidizer in many rocket fuels is _______.",
+        "points": 5,
+        "answer": "Liquid oxygen"
+      }
+    ]
+  },
+  {
+    "courseId": "674ce3cc7df966cc9ba98c22",
+    "title": "Aerodynamics Basics",
+    "description": "Quiz on the principles and applications of aerodynamics.",
+    "points": 40,
+    "availableDate": "2023-02-15T00:00:00.000Z",
+    "dueDate": "2023-03-15T23:59:59.000Z",
+    "published": false,
+    "questions": [
+      {
+        "questionType": "MCQ",
+        "title": "Which factor primarily affects the lift force on an aircraft?",
+        "points": 10,
+        "options": [
+          { "text": "Thrust", "correct": false },
+          { "text": "Drag", "correct": false },
+          { "text": "Angle of attack", "correct": true },
+          { "text": "Weight", "correct": false }
+        ]
+      },
+      {
+        "questionType": "TF",
+        "title": "Aerodynamic drag increases with the square of velocity.",
+        "points": 5,
+        "answer": "True"
+      }
+    ]
+  },
+  {
+    "courseId": "674ce3cc7df966cc9ba98c23",
+    "title": "Spacecraft Design Quiz",
+    "description": "Evaluate your knowledge of spacecraft design principles.",
+    "points": 30,
+    "availableDate": "2023-03-01T00:00:00.000Z",
+    "dueDate": "2023-04-01T23:59:59.000Z",
+    "published": true,
+    "questions": [
+      {
+        "questionType": "MCQ",
+        "title": "What is the most critical factor in spacecraft thermal control?",
+        "points": 10,
+        "options": [
+          { "text": "Radiators", "correct": true },
+          { "text": "Paint color", "correct": false },
+          { "text": "Structural material", "correct": false },
+          { "text": "Insulation type", "correct": false }
+        ]
+      },
+      {
+        "questionType": "FIB",
+        "title": "The force used to propel spacecraft in the vacuum of space is called _______.",
+        "points": 10,
+        "answer": "Thrust"
+      }
+    ]
+  }
+]

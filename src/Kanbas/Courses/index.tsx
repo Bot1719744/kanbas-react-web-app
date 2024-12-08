@@ -8,6 +8,15 @@ import React from "react";
 import { FaAlignJustify } from "react-icons/fa";
 import PeopleTable from "./People/Table";
 import KanbasNavigation from "../Navigation";
+import Quizzes from "./Quizzes";
+import QuizzeEditor from "./Quizzes/QuizEditor";
+import QuizDetails from "./Quizzes/QuizDetails";
+import QuizQuestionsEditor from "./Quizzes/QuestionEditor/QuizQuestionsEditor";
+import MultipleChoiceEditor from "./Quizzes/QuestionEditor/MultipleChoiceEditor";
+import TrueFalseEditor from "./Quizzes/QuestionEditor/TrueFalseEditor";
+import FillInBlankEditor from "./Quizzes/QuestionEditor/FillInBlankEditor";
+import QuizStartScreen from "./Quizzes/QuizStart";
+import QuizPreview from "./Quizzes/Preview";
 
 export default function Courses({ courses }: { courses: any[]; }) {
 
@@ -38,6 +47,15 @@ export default function Courses({ courses }: { courses: any[]; }) {
                             <Route path="Assignments" element={<Assignments />} />
                             <Route path="Assignments/:aid" element={<AssignmentEditor />} />
                             <Route path="People" element={<PeopleTable />} />
+                            <Route path="Quizzes" element={<Quizzes/>} />
+                            <Route path="Quizzes/:qid" element={<QuizzeEditor/>} />
+                            <Route path="Quizzes/New/:qid" element={<QuizDetails />} />
+                            <Route path="Quizzes/:qid/Questions" element={<QuizQuestionsEditor />} />
+                            <Route path="Quizzes/:qid/Questions/:questionId/MultipleChoice" element={<MultipleChoiceEditor />} />
+                            <Route path="Quizzes/:qid/Questions/:questionId/TrueFalse" element={<TrueFalseEditor />} />
+                            <Route path="Quizzes/:qid/Questions/:questionId/FillInBlank" element={<FillInBlankEditor />} />
+                            <Route path="Quizzes/:qid/Start" element={<QuizStartScreen />} />
+                            <Route path="Quizzes/:qid/Preview" element={<QuizPreview />} />
                         </Routes>
                     </div>
                 </div>
