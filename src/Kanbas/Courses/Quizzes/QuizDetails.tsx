@@ -1,33 +1,35 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
-import { updateQuiz } from "./reducer";
+import { useSelector } from "react-redux";
+import { useState, useEffect, useMemo } from "react";
 
 export default function QuizDetails() {
     const { cid, qid } = useParams();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const quizzes = useSelector((state: any) => state.quizzesReducer?.quizzes || []);
     const currentUser = useSelector((state: any) => state.accountReducer?.currentUser);
 
-    const quiz = quizzes.find((q: any) => q._id === qid) || {
-        type: "Graded Quiz",
-        points: 0,
-        assignmentGroup: "Quizzes",
-        shuffleAnswers: true,
-        timeLimit: 20,
-        multipleAttempts: false,
-        maxAttempts: 1,
-        showCorrectAnswers: false,
-        accessCode: "",
-        oneQuestionAtATime: true,
-        webcamRequired: false,
-        lockQuestionsAfterAnswering: false,
-        dueDate: "",
-        availableFrom: "",
-        availableUntil: "",
-    };
+    const quiz = useMemo(() => {
+        return (
+            quizzes.find((q: any) => q._id === qid) || {
+                type: "Graded Quiz",
+                points: 0,
+                assignmentGroup: "Quizzes",
+                shuffleAnswers: true,
+                timeLimit: 20,
+                multipleAttempts: false,
+                maxAttempts: 1,
+                showCorrectAnswers: false,
+                accessCode: "",
+                oneQuestionAtATime: true,
+                webcamRequired: false,
+                lockQuestionsAfterAnswering: false,
+                dueDate: "",
+                availableFrom: "",
+                availableUntil: "",
+            }
+        );
+    }, [quizzes, qid]);
 
     const [quizDetails, setQuizDetails] = useState(quiz);
 
